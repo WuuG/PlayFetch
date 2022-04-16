@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Animal : MonoBehaviour, IHit
 {
@@ -8,25 +9,40 @@ public class Animal : MonoBehaviour, IHit
     private Health HealthComp;
     public float CollisionDamage = 1.0f;
     public float MaxHunger = 3.0f;
+    public float score = 3.0f;
+    public Slider hungerSlider;
+    float hungerValue
+    {
+        // 将livs从3 -> 0 改未hungerValue从0 -> 3
+        get => -(HealthComp.Lives - MaxHunger);
+    }
+
     private void Awake()
     {
         HealthComp = new Health(MaxHunger);
     }
-    public float hungerValue
+    private void Start()
     {
-        get
+        if (hungerSlider == null)
         {
-            // 将livs从3 -> 0 改未hungerValue从0 -> 3
-            return -(HealthComp.Lives - MaxHunger);
+            throw new UnassignedReferenceException("animal did not attach slider ui");
         }
+        hungerSlider.maxValue = MaxHunger;
+        hungerSlider.value = 0;
+        hungerSlider.fillRect.gameObject.SetActive(false);
     }
+
     // Start is called before the first frame update
 
     public void OnHit(float Damage)
     {
         HealthComp.ChangeLives(Damage);
+        hungerSlider.fillRect.gameObject.SetActive(true);
+        hungerSlider.value = hungerValue;
+
         if (hungerValue >= MaxHunger)
         {
+            PlayerStatus.instance.AddScore(score);
             Destroy(this.gameObject);
         }
     }

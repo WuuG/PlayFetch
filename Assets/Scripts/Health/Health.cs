@@ -16,9 +16,17 @@ public class Health
         this.MaxLives = MaxLives;
         this.Lives = MaxLives;
     }
+    private float _lives;
 
     public float MaxLives { get; set; }
-    public float Lives { get; private set; }
+    public float Lives
+    {
+        get => this._lives;
+        set
+        {
+            this._lives = Mathf.Clamp(value, 0, MaxLives);
+        }
+    }
     public bool ChangeLives(float deltaLive)
     {
         if (Lives <= 0)

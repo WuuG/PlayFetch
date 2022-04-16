@@ -7,16 +7,18 @@ public class DetectCollsion : MonoBehaviour
     public float ProjectileDamage = 1.0f;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerStatus>() != null)
+        if (other.CompareTag("Player"))
         {
             return;
         }
-
-        IHit beHit = other.GetComponent<IHit>();
-        if (beHit != null)
+        if (other.CompareTag("Animals"))
         {
-            beHit.OnHit(-ProjectileDamage);
-            Destroy(gameObject);
+            IHit beHit = other.GetComponent<IHit>();
+            if (beHit != null)
+            {
+                beHit.OnHit(-ProjectileDamage);
+                Destroy(gameObject);
+            }
         }
     }
 }

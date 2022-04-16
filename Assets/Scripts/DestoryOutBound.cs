@@ -30,13 +30,11 @@ public class DestoryOutBound : MonoBehaviour
         }
         else if (Mathf.Abs(transform.position.x) > SideBound)
         {
-            Debug.Log(transform.position);
             playerStatus.OnHit(-OutOfAreaDamage);
             Destroy(gameObject);
         }
         else if (transFormZ < DownBound)
         {
-            Debug.Log(transform.position);
             playerStatus.OnHit(-OutOfAreaDamage);
             Destroy(gameObject);
         }
